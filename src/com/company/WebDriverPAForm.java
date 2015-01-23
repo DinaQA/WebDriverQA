@@ -1,6 +1,7 @@
 package com.company;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -66,9 +67,22 @@ public class WebDriverPAForm {
         //Select element from drop down list
         Select dropdown = new Select(webDriv.findElement(By.id("continents")));
         dropdown.selectByVisibleText("South America");
+        System.out.println("The following continent is selected: " + dropdown.getFirstSelectedOption().getText());
 
-        Select command = new Select(webDriv.findElement(By.id("selenium_commands")));
-        command.selectByVisibleText("Navigation Commands");
+        //select several values in dropdown
+        WebElement findComd = webDriv.findElement(By.id("selenium_commands"));
+        Select command = new Select(findComd);
+        command.selectByIndex(0);
+        findComd.sendKeys(Keys.CONTROL);
+        command.selectByIndex(1);
+        findComd.sendKeys(Keys.CONTROL);
+        command.selectByIndex(2);
+        findComd.sendKeys(Keys.CONTROL);
+        command.selectByIndex(4);
+        List<WebElement> checkeditems = command.getAllSelectedOptions();
+        System.out.println(checkeditems.get(1).getText());
+
+        //command.selectByVisibleText("Navigation Commands");
 
         WebElement download = webDriv.findElement(By.partialLinkText("Selenium Automation Hybrid Framework"));
         download.click();
