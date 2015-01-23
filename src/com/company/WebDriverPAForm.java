@@ -6,6 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by Dina.Knyr on 21.01.2015.
  */
@@ -30,15 +35,27 @@ public class WebDriverPAForm {
         WebElement yearExp = webDriv.findElement(By.id("exp-4"));
         yearExp.click();
 
-        WebElement date = webDriv.findElement(By.id("datepicker"));
-        date.sendKeys("01/22/2015");
+        //get current date
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String strTodaysDate = dateFormat.format(currentDate);
 
+        //input current date into form
+        WebElement date = webDriv.findElement(By.id("datepicker"));
+        date.sendKeys(strTodaysDate);
+        System.out.println("Test passed: Today's data is set "+strTodaysDate);
+
+        //check if check box is selected
         WebElement profession = webDriv.findElement(By.id("profession-0"));
         if (!profession.isSelected()) {
             profession.click();
-            System.out.println("Profession is selected!");
+            System.out.println("Test passed: Profession is set!");
+        }
+        else {
+            System.out.println("Test failed: Profession is set to default value!");
         }
 
+        //add picture on the form
         WebElement photo = webDriv.findElement(By.id("photo"));
         photo.sendKeys("D:/Dina/hairstyles-and-colors-with-bangs.jpg");
 
@@ -60,6 +77,7 @@ public class WebDriverPAForm {
 
         Thread.sleep(1000);
 
+        //check links on the page
         WebElement partlink = webDriv.findElement(By.partialLinkText("Partial Link"));
         partlink.click();
 
@@ -70,6 +88,7 @@ public class WebDriverPAForm {
 
         Thread.sleep(1000);
 
+        //check if PA form is filled or not
         WebElement check = webDriv.findElement(By.id("content"));
         if (check.getText().contains("Automation")){
             System.out.println("Test passed successfully :)");
