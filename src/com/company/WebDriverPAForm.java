@@ -63,6 +63,7 @@ public class WebDriverPAForm {
         WebElement tool = webDriv.findElement(By.id("tool-2"));
         tool.click();
 
+        //Select element from drop down list
         Select dropdown = new Select(webDriv.findElement(By.id("continents")));
         dropdown.selectByVisibleText("South America");
 
@@ -77,9 +78,19 @@ public class WebDriverPAForm {
 
         Thread.sleep(1000);
 
-        //check links on the page
-        WebElement partlink = webDriv.findElement(By.partialLinkText("Partial Link"));
-        partlink.click();
+        //click links on the page
+        //WebElement partlink = webDriv.findElement(By.partialLinkText("Partial Link"));
+        //partlink.click();
+
+        //get first 3 links from the page
+        WebElement partlink2 = webDriv.findElement(By.id("content"));
+        List<WebElement> allLinks = partlink2.findElements(By.tagName("a"));
+
+        for (int i=0; i<3; i++){
+            WebElement firstResult = allLinks.get(i);
+            System.out.println(firstResult.getText());
+            System.out.println(firstResult.getAttribute("href"));
+        }
 
         Thread.sleep(1000);
 
