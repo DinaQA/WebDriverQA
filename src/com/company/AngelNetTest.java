@@ -61,7 +61,7 @@ public class AngelNetTest {
     //4. При заполнении мастер пароля и сайта всевозможными символами, они все оказываются введенными в поля.
     @Test
     public void ValidateAllSymbols() throws InterruptedException {
-        String symbolMasterPass = "";
+            String symbolMasterPass;
         symbolMasterPass = "aDіІЇЦjK19~!@#$%^&*)_+=-;:.,/?";
         AngelNet.setMasterPass(webDriv, symbolMasterPass);
         AngelNet.setSite(webDriv, symbolMasterPass);
@@ -77,9 +77,9 @@ public class AngelNetTest {
  //5. При заполнении мастер пароля 32 символами, и сайт 128 символами, они все оказываются введенными в поля.
  @Test
  public void ValidateMaxSymbols() throws InterruptedException {
-     String symbolMasterPass = "";
+     String symbolMasterPass;
      symbolMasterPass = AngelNet.passMax();
-     String symbolSite = "";
+     String symbolSite;
      symbolSite = AngelNet.siteMax();
 
      AngelNet.setMasterPass(webDriv, symbolMasterPass);
