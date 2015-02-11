@@ -36,8 +36,8 @@ public class AngelNetTest {
             AngelNet.setMasterPass(webDriv, "");
             AngelNet.setSite(webDriv, "angel.net");
             AngelNet.generate(webDriv);
-            Thread.sleep(2000);
-            Assert.assertNotEquals("", AngelNet.getPassword(webDriv));
+
+            AngelNet.assertPassword(webDriv, "");
         }
 
          @Test //2. При мастер пароле: asdasd и сайте: angel.net сгенеренный пароль: B9ya7yayeK/Zn@1a
@@ -45,8 +45,8 @@ public class AngelNetTest {
             AngelNet.setMasterPass(webDriv, "asdasd");
             AngelNet.setSite(webDriv, "angel.net");
             AngelNet.generate(webDriv);
-             Thread.sleep(2000);
-            Assert.assertEquals("B9ya7yayeK/Zn@1a", AngelNet.getPassword(webDriv));
+
+            AngelNet.assertPassword(webDriv, "B9ya7yayeK/Zn@1a" );
         }
 
     @Test //3. При мастер пароле: не asdasd и сайте: angel.net сгенеренный пароль: НЕ B9ya7yayeK/Zn@1a
@@ -54,8 +54,7 @@ public class AngelNetTest {
         AngelNet.setMasterPass(webDriv, AngelNet.passRandom());
         AngelNet.setSite(webDriv, "angel.net");
         AngelNet.generate(webDriv);
-        Thread.sleep(1000);
-        Assert.assertNotEquals("B9ya7yayeK/Zn@1a", AngelNet.getPassword(webDriv));
+        AngelNet.assertPassword(webDriv, "B9ya7yayeK/Zn@1a");
     }
 
     //4. При заполнении мастер пароля и сайта всевозможными символами, они все оказываются введенными в поля.
@@ -69,10 +68,7 @@ public class AngelNetTest {
         Assert.assertEquals(symbolMasterPass, AngelNet.getMasterPass(webDriv));
         System.out.println("Site name with all symbols");
         Assert.assertEquals(symbolMasterPass, AngelNet.getSite(webDriv));
-        AngelNet.generate(webDriv);
-        Thread.sleep(2000);
-        System.out.println("Password is Generated");
-        Assert.assertNotEquals("", AngelNet.getPassword(webDriv));
+
     }
  //5. При заполнении мастер пароля 32 символами, и сайт 128 символами, они все оказываются введенными в поля.
  @Test
@@ -88,10 +84,7 @@ public class AngelNetTest {
      Assert.assertEquals(symbolMasterPass, AngelNet.getMasterPass(webDriv));
      System.out.println("Site name with Max number of symbols");
      Assert.assertEquals(symbolSite, AngelNet.getSite(webDriv));
-     AngelNet.generate(webDriv);
-     Thread.sleep(2000);
-     System.out.println("Password is Generated");
-     Assert.assertNotEquals("", AngelNet.getPassword(webDriv));
+
  }
 
     @Test //6. перевірити чи сайт і мастер-пароль не порожні після генерації пароля
@@ -111,7 +104,7 @@ public class AngelNetTest {
         AngelNet.setMasterPass(webDriv, "asdasd");
         AngelNet.setSite(webDriv, "angel.net");
         AngelNet.generate(webDriv);
-        Thread.sleep(500);
+
         Assert.assertTrue(AngelNet.checkMasterPass(webDriv));
 
     }
@@ -121,7 +114,7 @@ public class AngelNetTest {
         AngelNet.setMasterPass(webDriv, "asdasd");
         AngelNet.setSite(webDriv, "angel.net");
         AngelNet.generate(webDriv);
-        Thread.sleep(500);
+
         Assert.assertTrue(AngelNet.checkSite(webDriv));
 
     }
@@ -131,7 +124,7 @@ public class AngelNetTest {
         AngelNet.setMasterPass(webDriv, "asdasd");
         AngelNet.setSite(webDriv, "angel.net");
         AngelNet.generate(webDriv);
-        Thread.sleep(500);
+
         Assert.assertTrue(AngelNet.checkPassword(webDriv));
 
     }

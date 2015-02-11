@@ -1,5 +1,7 @@
 package com.company;
 
+
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,10 +12,6 @@ import java.util.Random;
  * Created by dina.knyr on 30.01.2015.
  */
 public class AngelNet {
-    /*private static String MasterPassXpath = "//input[@name='master']";
-    private static String SiteXpath = "//input[@name='site']";
-    private static String GenerateXpath = "//input[@value='Generate']";
-    private static String PasswordXpath = "//input[@name='password']";*/
     private static String MasterPassXpath = "//td[contains(text(), 'Your master password')]/..//input[1]";
     private static String SiteXpath = "//td[contains(text(),'Site name')]/..//input[1]";
     private static String GenerateXpath = "//input[@value='Generate']";
@@ -22,15 +20,12 @@ public class AngelNet {
     //create method which returns url
     public static void open(WebDriver webDriv) {
         //webDriv.get("http://angel.net/~nic/passwd.current.html");
-        //webDriv.get("http://oxogamestudio.com/passwd.current2.htm");
-        //webDriv.get("http://oxogamestudio.com/passwd.current3.htm");
-        //webDriv.get("http://oxogamestudio.com/passwd.current4.htm");
         webDriv.get("http://oxogamestudio.com/passwd.current7.htm");
 
     }
 
-    public static boolean checkMasterPass(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(MasterPassXpath));
+    public static boolean checkMasterPass(WebDriver webDrive) throws InterruptedException {
+        WebElement f = FindElement(webDrive, MasterPassXpath);
 
         if (f.isEnabled()) {
             return true;
@@ -38,8 +33,8 @@ public class AngelNet {
         return false;
     }
 
-    public static boolean checkSite(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(SiteXpath));
+    public static boolean checkSite(WebDriver webDrive) throws InterruptedException {
+        WebElement f = FindElement(webDrive, SiteXpath);
 
         if (f.isEnabled()) {
             return true;
@@ -47,8 +42,9 @@ public class AngelNet {
         return false;
     }
 
-    public static boolean checkPassword(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(PasswordXpath));
+    public static boolean checkPassword(WebDriver webDrive) throws InterruptedException {
+        WebElement f = FindElement(webDrive, PasswordXpath);
+
 
         if (f.isEnabled()) {
             return true;
@@ -56,41 +52,38 @@ public class AngelNet {
         return false;
     }
 
-    public static void setMasterPass(WebDriver webDrive, String MasterPass) {
-        WebElement f = webDrive.findElement(By.xpath(MasterPassXpath));
+    public static void setMasterPass(WebDriver webDrive, String MasterPass) throws InterruptedException {
+        WebElement f = FindElement(webDrive, MasterPassXpath);
         f.sendKeys(MasterPass);
     }
 
-    public static String getMasterPass(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(MasterPassXpath));
+    public static String getMasterPass(WebDriver webDrive) throws InterruptedException {
+        WebElement f = FindElement(webDrive, MasterPassXpath);
         return f.getAttribute("value");
     }
 
-    public static void setSite(WebDriver webDrive, String site) {
-        WebElement f = webDrive.findElement(By.xpath(SiteXpath));
+    public static void setSite(WebDriver webDrive, String site) throws InterruptedException {
+        WebElement f = FindElement(webDrive, SiteXpath);
         f.sendKeys(site);
     }
 
-    public static String getSite(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(SiteXpath));
+    public static String getSite(WebDriver webDrive) throws InterruptedException {
+        WebElement f = FindElement(webDrive, SiteXpath);
+
         return f.getAttribute("value");
     }
 
     public static void generate(WebDriver webDrive) throws InterruptedException {
-        WebElement f = webDrive.findElement(By.xpath(GenerateXpath));
+
+        WebElement f = FindElement(webDrive, GenerateXpath);
         f.click();
-        Thread.sleep(1000);
+
     }
 
-    public static String getPassword(WebDriver webDrive) {
-        WebElement f = webDrive.findElement(By.xpath(PasswordXpath));
-        return f.getAttribute("value");
-    }
+    public static void assertPassword(WebDriver webDrive, String expectedPassword) throws InterruptedException {
+        WebElement f = FindElement(webDrive, PasswordXpath);
 
-    public static String symbolValue() {
-        String symbolMasterPass = "";
-        symbolMasterPass = "aDіІЇЦjK19~!@#$%^&*)_+=-;:.,/?";
-        return symbolMasterPass;
+        WaitValue(f, expectedPassword);
     }
 
     public static String passRandom() {
@@ -133,19 +126,40 @@ public class AngelNet {
         return siteMax;
     }
 
-    public static void timeOut(WebDriver webDriver) throws InterruptedException {
+// find and wait for element on the page
+    public static WebElement FindElement(WebDriver webDriver, String XPath) throws InterruptedException {
 
         int timeout = 10000;
         int timepassed = 0;
         WebElement h;
-        while (timepassed < timeout){
-            if (webDriver.findElements(By.xpath(PasswordXpath)).size() > 0) {
-                h = webDriver.findElements(By.xpath(PasswordXpath)).get(1);
-                break;
+        while(timepassed < timeout){
+            if (webDriver.findElements(By.xpath(XPath)).size() > 0){
+                h = webDriver.findElements(By.xpath(XPath)).get(0);
+                return h;
+
             }
             Thread.sleep(100);
             timepassed += 100;
         }
+        Assert.fail("Not found element with xpath: "+XPath);
+        return null; //no values returned
     }
+    public static void WaitValue(WebElement webElement, String expectedResult) throws InterruptedException {
+
+        int timeout = 10000;
+        int timepassed = 0;
+        WebElement h;
+        while(timepassed < timeout){
+            if (webElement.getAttribute("value").equals(expectedResult)){
+                return;// for void only
+            }
+            Thread.sleep(100);
+            timepassed += 100;
+
+    }
+        Assert.fail("Expected result: "+expectedResult+ "\n" +
+                " Actual result: " +webElement.getAttribute("value"));
+    }
+
 }
 
